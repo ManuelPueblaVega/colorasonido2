@@ -1,0 +1,186 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="1894.7">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Helvetica; min-height: 14.0px}
+  </style>
+</head>
+<body>
+<p class="p1">&lt;!DOCTYPE html&gt;</p>
+<p class="p1">&lt;html lang="es"&gt;</p>
+<p class="p1">&lt;head&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;title&gt;Color a Sonido App&lt;/title&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;style&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>body {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-family: Arial, sans-serif;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>display: flex;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>flex-direction: column;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>align-items: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>justify-content: center;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100vh;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #f0f0f0;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#video {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 640px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 480px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>background-color: #000;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#colorDisplay {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>width: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>height: 100px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>border: 2px solid #000;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>#switchCamera {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>margin-top: 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>padding: 10px 20px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>font-size: 16px;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>cursor: pointer;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</p>
+<p class="p1">&lt;/head&gt;</p>
+<p class="p1">&lt;body&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;h1&gt;Color a Sonido App&lt;/h1&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;video id="video" autoplay&gt;&lt;/video&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;div id="colorDisplay"&gt;&lt;/div&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;p id="colorName"&gt;&lt;/p&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;button id="switchCamera"&gt;Cambiar Cámara&lt;/button&gt;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.js"&gt;&lt;/script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;script&gt;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const video = document.getElementById('video');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const colorDisplay = document.getElementById('colorDisplay');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const colorName = document.getElementById('colorName');</p>
+<p class="p1"><span class="Apple-converted-space">        </span>const switchCameraButton = document.getElementById('switchCamera');</p>
+<p class="p2"><span class="Apple-converted-space">        </span></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const colorNotes = {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'red': 'C4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'orange': 'D4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'yellow': 'E4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'lime': 'F4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'green': 'G4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'light blue': 'A4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'blue': 'B4',</p>
+<p class="p1"><span class="Apple-converted-space">            </span>'purple': 'C5'</p>
+<p class="p1"><span class="Apple-converted-space">        </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>const synth = new Tone.Synth().toDestination();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let currentStream = null;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>let usingFrontCamera = true;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>async function setupCamera() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (currentStream) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentStream.getTracks().forEach(track =&gt; track.stop());</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>const constraints = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>video: {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>facingMode: usingFrontCamera ? 'user' : 'environment'</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>try {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const stream = await navigator.mediaDevices.getUserMedia(constraints);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>video.srcObject = stream;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>currentStream = stream;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>} catch (error) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>console.error('Error accessing the camera', error);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getDominantColor(imageData) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const colorCounts = {};</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let maxCount = 0;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let dominantColor = '#000000';</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (let i = 0; i &lt; imageData.data.length; i += 4) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const rgb = `rgb(${imageData.data[i]}, ${imageData.data[i + 1]}, ${imageData.data[i + 2]})`;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>colorCounts[rgb] = (colorCounts[rgb] || 0) + 1;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (colorCounts[rgb] &gt; maxCount) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>maxCount = colorCounts[rgb];</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>dominantColor = rgb;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return dominantColor;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getNearestColorName(rgbColor) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const colorHexes = {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'red': 'rgb(255, 0, 0)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'orange': 'rgb(255, 165, 0)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'yellow': 'rgb(255, 255, 0)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'lime': 'rgb(0, 255, 0)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'green': 'rgb(0, 128, 0)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'light blue': 'rgb(173, 216, 230)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'blue': 'rgb(0, 0, 255)',</p>
+<p class="p1"><span class="Apple-converted-space">                </span>'purple': 'rgb(128, 0, 128)'</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>let nearestColor = 'red';</p>
+<p class="p1"><span class="Apple-converted-space">            </span>let minDistance = Infinity;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>for (const [colorName, colorRgb] of Object.entries(colorHexes)) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>const distance = getDistance(rgbColor, colorRgb);</p>
+<p class="p1"><span class="Apple-converted-space">                </span>if (distance &lt; minDistance) {</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>minDistance = distance;</p>
+<p class="p1"><span class="Apple-converted-space">                    </span>nearestColor = colorName;</p>
+<p class="p1"><span class="Apple-converted-space">                </span>}</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return nearestColor;</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function getDistance(color1, color2) {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [r1, g1, b1] = color1.match(/\d+/g).map(Number);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const [r2, g2, b2] = color2.match(/\d+/g).map(Number);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>return Math.sqrt((r1 - r2) ** 2 + (g1 - g2) ** 2 + (b1 - b2) ** 2);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>function processVideo() {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const canvas = document.createElement('canvas');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const ctx = canvas.getContext('2d');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.width = 160;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>canvas.height = 120;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>ctx.drawImage(video, 0, 0, canvas.width, canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const dominantColor = getDominantColor(imageData);</p>
+<p class="p1"><span class="Apple-converted-space">            </span>const nearestColor = getNearestColorName(dominantColor);</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>colorDisplay.style.backgroundColor = dominantColor;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>colorName.textContent = `Color detectado: ${nearestColor}`;</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>if (colorNotes[nearestColor]) {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>synth.triggerAttackRelease(colorNotes[nearestColor], '8n');</p>
+<p class="p1"><span class="Apple-converted-space">            </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">            </span>requestAnimationFrame(processVideo);</p>
+<p class="p1"><span class="Apple-converted-space">        </span>}</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>switchCameraButton.addEventListener('click', () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>usingFrontCamera = !usingFrontCamera;</p>
+<p class="p1"><span class="Apple-converted-space">            </span>setupCamera();</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p2"><br></p>
+<p class="p1"><span class="Apple-converted-space">        </span>setupCamera().then(() =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">            </span>video.onloadedmetadata = () =&gt; {</p>
+<p class="p1"><span class="Apple-converted-space">                </span>processVideo();</p>
+<p class="p1"><span class="Apple-converted-space">            </span>};</p>
+<p class="p1"><span class="Apple-converted-space">        </span>});</p>
+<p class="p1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</p>
+<p class="p1">&lt;/body&gt;</p>
+<p class="p1">&lt;/html&gt;</p>
+</body>
+</html>
